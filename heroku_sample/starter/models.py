@@ -1,8 +1,10 @@
-from sqlalchemy import Column, String, create_engine
+import os
+from sqlalchemy import Column, String, create_engine, Integer
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-database_path = os.environ['DATABASE_URL']
+# database_path = os.environ['DATABASE_URL']
+database_path='postgresql://postgres:123456@localhost:5432/agency'
 
 db = SQLAlchemy()
 
@@ -17,24 +19,90 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     db.create_all()
 
+'''
+Movie
+Have title and release date
+'''
+class Movie(db.Model):  
+  __tablename__ = 'Movie'
+
+  id = Column(Integer, primary_key=True)
+  title = Column(String)
+  release_date = db.Column(db.DateTime)
+
+  def __init__(self, title, release_date):
+    self.title = title
+    self.release_date = release_date
+
+  def insert(self):
+    db.session.add(self)
+    db.session.commit()
+  
+  def update(self):
+    db.session.commit()
+
+  def delete(self):
+    db.session.delete(self)
+    db.session.commit()
+
+  def format(self):
+    return {
+      'id': self.id,
+      'title': self.title,
+      'release_date': self.release_date}
 
 '''
-Person
-Have title and release year
+Actor
+Have name, age and gender
 '''
-class Person(db.Model):  
-  __tablename__ = 'People'
+class Actor(db.Model):  
+  __tablename__ = 'Actor'
 
   id = Column(Integer, primary_key=True)
   name = Column(String)
-  catchphrase = Column(String)
+  age = db.Column(db.Integer)
+  gender = Column(String)
 
-  def __init__(self, name, catchphrase=""):
+  def __init__(self, name, age, gender):
     self.name = name
-    self.catchphrase = catchphrase
+    self.age = age
+    self.gender = gender
+
+  def insert(self):
+    db.session.add(self)
+    db.session.commit()
+  
+  def update(self):
+    db.session.commit()
+
+  def delete(self):
+    db.session.delete(self)
+    db.session.commit()
 
   def format(self):
     return {
       'id': self.id,
       'name': self.name,
-      'catchphrase': self.catchphrase}
+      'age': self.age,
+      'gender': self.gender}
+
+# '''
+# Person
+# Have title and release year
+# '''
+# class Person(db.Model):  
+#   __tablename__ = 'People'
+
+#   id = Column(Integer, primary_key=True)
+#   name = Column(String)
+#   catchphrase = Column(String)
+
+#   def __init__(self, name, catchphrase=""):
+#     self.name = name
+#     self.catchphrase = catchphrase
+
+#   def format(self):
+#     return {
+#       'id': self.id,
+#       'name': self.name,
+#       'catchphrase': self.catchphrase}
