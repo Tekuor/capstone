@@ -120,7 +120,7 @@ def create_app(test_config=None):
         })
 
     @app.route('/actors/<int:id>', methods=['DELETE'])
-    def delete_movie(id):
+    def delete_actor(id):
         try:
             actor = Actor.query.filter(Actor.id == id).one_or_none()
 
