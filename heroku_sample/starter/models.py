@@ -29,10 +29,12 @@ class Movie(db.Model):
   id = Column(Integer, primary_key=True)
   title = Column(String)
   release_date = db.Column(db.DateTime)
+  image_url = Column(String)
 
   def __init__(self, title, release_date):
     self.title = title
     self.release_date = release_date
+    self.image_url = image_url
 
   def insert(self):
     db.session.add(self)
@@ -49,7 +51,8 @@ class Movie(db.Model):
     return {
       'id': self.id,
       'title': self.title,
-      'release_date': self.release_date}
+      'release_date': self.release_date,
+      'image_url': self.image_url}
 
 '''
 Actor
@@ -62,11 +65,13 @@ class Actor(db.Model):
   name = Column(String)
   age = db.Column(db.Integer)
   gender = Column(String)
+  image_url = Column(String)
 
-  def __init__(self, name, age, gender):
+  def __init__(self, name, age, gender, image_url):
     self.name = name
     self.age = age
     self.gender = gender
+    self.image_url = image_url
 
   def insert(self):
     db.session.add(self)
@@ -84,7 +89,8 @@ class Actor(db.Model):
       'id': self.id,
       'name': self.name,
       'age': self.age,
-      'gender': self.gender}
+      'gender': self.gender,
+      'image_url': self.image_url}
 
 # '''
 # Person
