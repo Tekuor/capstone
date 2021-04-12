@@ -31,7 +31,7 @@ class Movie(db.Model):
   release_date = db.Column(db.DateTime)
   image_url = Column(String)
 
-  def __init__(self, title, release_date):
+  def __init__(self, title, release_date, image_url):
     self.title = title
     self.release_date = release_date
     self.image_url = image_url

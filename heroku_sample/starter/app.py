@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify, abort
 from models import setup_db, Movie, Actor
 from flask_cors import CORS
 from auth.auth import AuthError, requires_auth
+import sys
 
 ITEMS_PER_PAGE = 10
 
@@ -63,9 +64,10 @@ def create_app(test_config=None):
 
         new_title = body.get('title', None)
         new_release_date = body.get('release_date', None)
+        new_image_url = body.get('release_date', None)
 
         try:
-            movie = Movie(title=new_title, release_date=new_release_date)
+            movie = Movie(title=new_title, release_date=new_release_date, image_url=new_image_url)
             movie.insert()
 
             selection = Movie.query.order_by(Movie.id).all()
@@ -83,7 +85,7 @@ def create_app(test_config=None):
 
     @app.route('/movies/<int:id>', methods=['PATCH'])
     # @requires_auth('patch:drinks')
-    def update_movie(payload,id):
+    def update_movie(id):
         try:
             body = request.get_json()
             movie = Movie.query.filter(Movie.id == id).one_or_none()
@@ -95,15 +97,18 @@ def create_app(test_config=None):
                 movie.title = body.get('title', None)
             if 'release_date' in body:
                 movie.recipe = body.get('release_date', None)
+            if 'image_url' in body:
+                movie.image_url = body.get('image_url', None)
 
             movie.update()
 
             return jsonify({
                 'success': True,
-                'movie': movie
+                'movie': movie.format()
             })
 
         except:
+            print(sys.exc_info())
             abort(422)
 
     @app.route('/actors')
