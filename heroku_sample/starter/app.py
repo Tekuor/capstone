@@ -64,7 +64,7 @@ def create_app(test_config=None):
 
         new_title = body.get('title', None)
         new_release_date = body.get('release_date', None)
-        new_image_url = body.get('release_date', None)
+        new_image_url = body.get('image_url', None)
 
         try:
             movie = Movie(title=new_title, release_date=new_release_date, image_url=new_image_url)
