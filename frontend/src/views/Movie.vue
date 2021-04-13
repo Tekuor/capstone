@@ -65,13 +65,11 @@
                 this.$router.push('/add-movie')
             },
             async getMovies() {
-                // Get the access token from the auth wrapper
                 const token = await this.$auth.getTokenSilently();
 
-                // Use Axios to make a call to the API
                 const { data } = await axios.get("http://127.0.0.1:5000/movies", {
                     headers: {
-                    Authorization: `Bearer ${token}`    // send the access token through the 'Authorization' header
+                    Authorization: `Bearer ${token}`
                     }
                 });
                 
