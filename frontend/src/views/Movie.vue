@@ -15,14 +15,13 @@
                             </div>
                             <div class="card-content">
                                 <div class="content">
-                                {{movie.title}}
-                                <br>
+                                <div style="color:#990033" class="has-text-weight-semibold">{{movie.title}}</div>
                                 <div>{{movie.release_date}}</div>
                                 </div>
                             </div>
                             <footer class="card-footer">
-                                <a href="#" class="card-footer-item">Edit</a>
-                                <a href="#" class="card-footer-item">Delete</a>
+                                <a class="card-footer-item" style="color:#990033">Edit</a>
+                                <a class="card-footer-item" style="color:#990033" @click="confirm(movie.id)">Delete</a>
                             </footer>
                         </div>
                     </div>
@@ -40,6 +39,7 @@
 <script>
     import NavBar from "../components/NavBar";
     import axios from "axios";
+
     export default {
         name: 'Movie',
         components: {
@@ -54,27 +54,39 @@
             await this.getMovies()
         },
         methods: {
-            // Log the user out
             logout() {
+                localStorage.removeItem('token')
+                localStorage.removeItem('user')
                 this.$auth.logout({
                     returnTo: window.location.origin
                 });
-                localStorage.removeItem('token')
             },
             goToAddMovie(){
                 this.$router.push('/add-movie')
             },
             async getMovies() {
-                const token = await this.$auth.getTokenSilently();
+                    const token = localStorage.getItem('token')
 
-                const { data } = await axios.get("http://127.0.0.1:5000/movies", {
-                    headers: {
-                    Authorization: `Bearer ${token}`
-                    }
+                    const { data } = await axios.get("http://127.0.0.1:5000/movies", {
+                        headers: {
+                        Authorization: `Bearer ${token}`
+                        }
+                    });
+                    
+                    this.movies = data.movies;
+            },
+            confirm(id) {
+                this.$buefy.dialog.confirm({
+                    message: 'Are you sure you want to delete this movie?',
+                    onConfirm: () => this.deleteMovie(id)
+                })
+            },
+            async deleteMovie(id) {
+                axios.delete('http://127.0.0.1:5000/movies/' + id)
+                .then(() => {
+                    this.getMovies()
                 });
-                
-                this.movies = data.movies;
-            }
+            },
         }
     }
 </script>
@@ -83,4 +95,12 @@
     .center {
         padding: 150px 0;
     }
+    .card {
+        height: 100%;
+        /* display: flex;
+        flex-direction: column */
+    }
+    /* .card-footer {
+        margin-top: auto
+    } */
 </style>

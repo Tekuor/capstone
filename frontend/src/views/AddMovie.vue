@@ -56,13 +56,11 @@
             async addMovie() {
                 this.$router.push('/movies')
                 try{
-                    // Get the access token from the auth wrapper
-                    const token = await this.$auth.getTokenSilently();
+                    const token = localStorage.getItem('token')
 
-                    // Use Axios to make a call to the API
                     await axios.post("http://127.0.0.1:5000/movies", this.form, {
                         headers: {
-                        Authorization: `Bearer ${token}`    // send the access token through the 'Authorization' header
+                        Authorization: `Bearer ${token}`
                         }
                     });
                 }catch(e){
