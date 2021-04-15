@@ -1,7 +1,7 @@
 <template>
     <b-navbar style="background-color:#990033">
         <template #end>
-            <b-navbar-item href="#" class="has-text-grey-light">
+            <b-navbar-item tag="router-link" :to="{ path: '/movies' }" class="has-text-grey-light">
                 Movies
             </b-navbar-item>
             <b-navbar-item href="#" class="has-text-grey-light">

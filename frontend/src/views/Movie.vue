@@ -1,7 +1,7 @@
 <template>
     <div>
         <NavBar/>
-        <div class="container">
+        <div class="container" style="text-align: center;">
             <div class="pt-4" v-if="movies.length">
                 <div class="columns" style="float:right"><b-button @click="goToAddMovie()" type="is-primary" style="background-color:#990033">Add Movie</b-button></div>
                 <br/>

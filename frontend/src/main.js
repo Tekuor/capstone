@@ -15,6 +15,8 @@ Vue.use(Buefy)
 Vue.use(Auth0Plugin, {
   domain,
   clientId,
+  audience: 'agency',
+  response_type: 'token',
   onRedirectCallback: appState => {
     router.push(
       appState && appState.targetUrl
