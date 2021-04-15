@@ -6,9 +6,10 @@
 
 <script>
 import { getInstance } from "@/auth";
+import jwt_decode from "jwt-decode";
 
 export default {
-  async created(){
+  async mounted(){
     await this.retrieveTokenFromAuth()
   },
   methods: {
@@ -21,7 +22,9 @@ export default {
               .getTokenSilently()
               .then(authToken => {
                 localStorage.setItem('token', authToken)
-                localStorage.setItem('user', JSON.stringify(this.$auth.user))
+                let decoded = jwt_decode(authToken);
+                let user = Object.assign({}, this.$auth.user, {permissions: decoded.permissions})
+                localStorage.setItem('user', JSON.stringify(user))
                 resolve(authToken);
               })
               .catch(error => {
