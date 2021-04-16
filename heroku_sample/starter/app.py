@@ -24,20 +24,25 @@ def create_app(test_config=None):
     CORS(app)
 
     @app.route('/movies')
-    def retrieve_movies():
+    @requires_auth('get:movies')
+    def retrieve_movies(payload):
         selection = Movie.query.order_by(Movie.id).all()
         current_movies = paginate_items(request, selection)
 
-        if len(current_movies) == 0:
+        try:
+            if len(current_movies) == 0:
+                abort(404)
+
+            return jsonify({
+            'success': True,
+            'movies': current_movies
+            })
+        except:
             abort(404)
 
-        return jsonify({
-        'success': True,
-        'movies': current_movies
-        })
-
     @app.route('/movies/<int:id>', methods=['DELETE'])
-    def delete_movie(id):
+    @requires_auth('delete:movies')
+    def delete_movie(payload, id):
         try:
             movie = Movie.query.filter(Movie.id == id).one_or_none()
 
@@ -59,7 +64,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies', methods=['POST'])
-    def create_movie():
+    @requires_auth('post:movies')
+    def create_movie(payload):
         body = request.get_json()
 
         new_title = body.get('title', None)
@@ -84,8 +90,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies/<int:id>', methods=['PATCH'])
-    # @requires_auth('patch:drinks')
-    def update_movie(id):
+    @requires_auth('patch:movies')
+    def update_movie(payload, id):
         try:
             body = request.get_json()
             movie = Movie.query.filter(Movie.id == id).one_or_none()
@@ -112,7 +118,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/actors')
-    def retrieve_actors():
+    @requires_auth('get:actors')
+    def retrieve_actors(payload):
         selection = Actor.query.order_by(Actor.id).all()
         current_actors = paginate_items(request, selection)
 
@@ -125,7 +132,8 @@ def create_app(test_config=None):
         })
 
     @app.route('/actors/<int:id>', methods=['DELETE'])
-    def delete_actor(id):
+    @requires_auth('delete:actors')
+    def delete_actor(payload, id):
         try:
             actor = Actor.query.filter(Actor.id == id).one_or_none()
 
@@ -147,7 +155,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/actors', methods=['POST'])
-    def create_actor():
+    @requires_auth('post:actors')
+    def create_actor(payload):
         body = request.get_json()
 
         new_name = body.get('name', None)
@@ -172,7 +181,7 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/actors/<int:id>', methods=['PATCH'])
-    # @requires_auth('patch:drinks')
+    @requires_auth('patch:actors')
     def update_actor(payload,id):
         try:
             body = request.get_json()
@@ -261,6 +270,14 @@ def create_app(test_config=None):
         'error': 422,
         'message': "unprocessible entity"
         }), 422
+
+    @app.errorhandler(AuthError)
+    def errorFailed(error):
+        return jsonify({
+        "success": False, 
+        "error": error.status_code,
+        "message": error.error
+        }), error.status_code
 
     return app
 
