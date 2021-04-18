@@ -30,9 +30,6 @@ def create_app(test_config=None):
         current_movies = paginate_items(request, selection)
 
         try:
-            if len(current_movies) == 0:
-                abort(404)
-
             return jsonify({
             'success': True,
             'movies': current_movies
@@ -114,7 +111,6 @@ def create_app(test_config=None):
             })
 
         except:
-            print(sys.exc_info())
             abort(422)
 
     @app.route('/actors')
@@ -122,9 +118,6 @@ def create_app(test_config=None):
     def retrieve_actors(payload):
         selection = Actor.query.order_by(Actor.id).all()
         current_actors = paginate_items(request, selection)
-
-        if len(current_actors) == 0:
-            abort(404)
 
         return jsonify({
         'success': True,
@@ -162,9 +155,10 @@ def create_app(test_config=None):
         new_name = body.get('name', None)
         new_age = body.get('age', None)
         new_gender = body.get('gender', None)
+        new_image_url = body.get('image_url', None)
 
         try:
-            actor = Actor(title=new_title, release_date=new_release_date)
+            actor = Actor(name=new_name, age=new_age, gender=new_gender, image_url=new_image_url)
             actor.insert()
 
             selection = Actor.query.order_by(Actor.id).all()
@@ -196,12 +190,14 @@ def create_app(test_config=None):
                 actor.age = body.get('age', None)
             if 'gender' in body:
                 actor.gender = body.get('gender', None)
+            if 'gender' in body:
+                actor.image_url = body.get('image_url', None)
 
             actor.update()
 
             return jsonify({
                 'success': True,
-                'actor': actor
+                'actor': actor.format()
             })
 
         except:
