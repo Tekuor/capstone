@@ -43,9 +43,11 @@ class CastingAgencyTestCase(unittest.TestCase):
             'gender':'female'
         }
 
-        # self.search = {
-        #     'searchTerm':'African'
-        # }
+        self.wrong_movie = {
+            'title':'First Movie',
+            'release_date': [],
+            "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg"
+        }
 
         # self.wrong_search = {
         #     'searchTerm':[]
@@ -81,6 +83,18 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['movies']))
 
+    def test_404_sent_requesting_movies_beyond_valid_page(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
+        
+        res = self.client().get('/movies?page=300', headers=headers)
+        data = json.loads(res.data)
+        
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
     def test_create_new_movie(self):
         headers = {
         'Content-Type': 'application/json',
@@ -95,6 +109,18 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(len(data['movies']))
         self.assertTrue(data['total_movies'])
 
+    def test_422_if_create_movie_unprocessible_entity(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
+
+        res = self.client().post('/movies', headers=headers, json=self.wrong_movie)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessible entity')
+
     def test_update_movie(self):
         headers = {
         'Content-Type': 'application/json',
@@ -102,7 +128,6 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.new_movie['title'] = 'Updated Movie'
         res = self.client().patch('/movies/1', headers=headers, json=self.new_movie)
-        print('res', res)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)

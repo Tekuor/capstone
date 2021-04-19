@@ -29,12 +29,16 @@ def create_app(test_config=None):
         selection = Movie.query.order_by(Movie.id).all()
         current_movies = paginate_items(request, selection)
 
+        if len(current_movies) == 0:
+          abort(404)
+
         try:
             return jsonify({
             'success': True,
             'movies': current_movies
             })
         except:
+            sys.exc_info()
             abort(404)
 
     @app.route('/movies/<int:id>', methods=['DELETE'])
