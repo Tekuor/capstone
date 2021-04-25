@@ -11,7 +11,7 @@ Developers using this project should already have Python3, pip and node installe
 
 #### Backend
 
-From the backend folder run `pip install requirements.txt`. All required packages are included in the requirements file. 
+From the root folder run `pip install requirements.txt`. All required packages are included in the requirements file with environment variables in the setup.sh file. 
 
 To run the application run the following commands: 
 ```
@@ -20,19 +20,9 @@ export FLASK_ENV=development
 flask run
 ```
 
-These commands put the application in development and directs our application to use the `app.py` file in our flaskr folder. Working in development mode shows an interactive debugger in the console and restarts the server whenever changes are made. If running locally on Windows, look for the commands in the [Flask documentation](http://flask.pocoo.org/docs/1.0/tutorial/factory/).
+These commands put the application in development and directs our application to use the `app.py` file in our root folder. Working in development mode shows an interactive debugger in the console and restarts the server whenever changes are made. If running locally on Windows, look for the commands in the [Flask documentation](http://flask.pocoo.org/docs/1.0/tutorial/factory/).
 
 The application is run on `http://127.0.0.1:5000/` by default and is a proxy in the frontend configuration. 
-
-#### Frontend
-
-From the frontend folder, run the following commands to start the client: 
-```
-npm install // only once to install dependencies
-npm run serve 
-```
-
-By default, the frontend will run on localhost:8080. 
 
 ### Tests
 In order to run tests navigate to the backend folder and run the following commands: 
