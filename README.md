@@ -70,394 +70,159 @@ The API will return one of these error types when requests fail:
 
 ```
 
-## GET /categories
+## GET /movies
 General:
-Returns a list of category objects and success value
-Sample: curl http://127.0.0.1:5000/categories
+Returns a list of movie objects and success value
+Sample: curl http://127.0.0.1:5000/movies
 
 ```bash
-"categories": [
-    {
-      "id": 1,
-      "type": "Science"
-    },
-    {
-      "id": 2,
-      "type": "Art"
-    },
-    {
-      "id": 3,
-      "type": "Geography"
-    },
-    {
-      "id": 4,
-      "type": "History"
-    },
-    {
-      "id": 5,
-      "type": "Entertainment"
-    },
-    {
-      "id": 6,
-      "type": "Sports"
-    }
-  ],
-"success": true
+{
+    "movies": [
+        {
+            "id": 1,
+            "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg",
+            "release_date": "Mon, 07 Jun 2021 00:00:00 GMT",
+            "title": "The princess and the frog"
+        }
+    ],
+    "success": true
 }
 ```
 
-## GET /questions
+## GET /actors
 General:
-Returns a list of question objects, success value, category objects and total number of questions
+Returns a list of actor objects and success value
 Results are paginated in groups of 10. Include a request argument to choose page number, starting from 1.
-Sample: curl http://127.0.0.1:5000/questions
-
-```bash
- "questions": [
-    {
-      "answer": "Apollo 13", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 2, 
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    }, 
-    {
-      "answer": "Tom Cruise", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 4, 
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    }, 
-    {
-      "answer": "Maya Angelou", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 5, 
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    }, 
-    {
-      "answer": "Edward Scissorhands", 
-      "category": 5, 
-      "difficulty": 3, 
-      "id": 6, 
-      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
-    }, 
-    {
-      "answer": "Muhammad Ali", 
-      "category": 4, 
-      "difficulty": 1, 
-      "id": 9, 
-      "question": "What boxer's original name is Cassius Clay?"
-    }, 
-    {
-      "answer": "Brazil", 
-      "category": 6, 
-      "difficulty": 3, 
-      "id": 10, 
-      "question": "Which is the only team to play in every soccer World Cup tournament?"
-    }, 
-    {
-      "answer": "Uruguay", 
-      "category": 6, 
-      "difficulty": 4, 
-      "id": 11, 
-      "question": "Which country won the first ever soccer World Cup in 1930?"
-    }, 
-    {
-      "answer": "George Washington Carver", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 12, 
-      "question": "Who invented Peanut Butter?"
-    }, 
-    {
-      "answer": "Lake Victoria", 
-      "category": 3, 
-      "difficulty": 2, 
-      "id": 13, 
-      "question": "What is the largest lake in Africa?"
-    }, 
-    {
-      "answer": "The Palace of Versailles", 
-      "category": 3, 
-      "difficulty": 3, 
-      "id": 14, 
-      "question": "In which royal palace would you find the Hall of Mirrors?"
-    }
-  ], 
-  "categories": [
-    {
-      "id": 1, 
-      "type": "Science"
-    }, 
-    {
-      "id": 2, 
-      "type": "Art"
-    }, 
-    {
-      "id": 3, 
-      "type": "Geography"
-    }, 
-    {
-      "id": 4, 
-      "type": "History"
-    }, 
-    {
-      "id": 5, 
-      "type": "Entertainment"
-    }, 
-    {
-      "id": 6, 
-      "type": "Sports"
-    }
-  ],
-  "total_questions": 18
-}
-```
-
-## POST /questions
-General:
-Creates a new question using the submitted question, answer, difficulty and category. Returns the id of the created question, success value, total questions, and question list based on current page number to update the frontend.
-curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"Which country is the largest producer of vanilla?","answer":"Madagascar","difficulty":"3","category":"2"}'
+Sample: curl http://127.0.0.1:5000/actors
 
 ```bash
 {
-  "created": 27, 
-  "questions": [
-    {
-      "answer": "Apollo 13", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 2, 
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    }, 
-    {
-      "answer": "Tom Cruise", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 4, 
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    }, 
-    {
-      "answer": "Maya Angelou", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 5, 
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    }, 
-    {
-      "answer": "Edward Scissorhands", 
-      "category": 5, 
-      "difficulty": 3, 
-      "id": 6, 
-      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
-    }, 
-    {
-      "answer": "Muhammad Ali", 
-      "category": 4, 
-      "difficulty": 1, 
-      "id": 9, 
-      "question": "What boxer's original name is Cassius Clay?"
-    }, 
-    {
-      "answer": "Brazil", 
-      "category": 6, 
-      "difficulty": 3, 
-      "id": 10, 
-      "question": "Which is the only team to play in every soccer World Cup tournament?"
-    }, 
-    {
-      "answer": "Uruguay", 
-      "category": 6, 
-      "difficulty": 4, 
-      "id": 11, 
-      "question": "Which country won the first ever soccer World Cup in 1930?"
-    }, 
-    {
-      "answer": "George Washington Carver", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 12, 
-      "question": "Who invented Peanut Butter?"
-    }, 
-    {
-      "answer": "Lake Victoria", 
-      "category": 3, 
-      "difficulty": 2, 
-      "id": 13, 
-      "question": "What is the largest lake in Africa?"
-    }, 
-    {
-      "answer": "The Palace of Versailles", 
-      "category": 3, 
-      "difficulty": 3, 
-      "id": 14, 
-      "question": "In which royal palace would you find the Hall of Mirrors?"
-    }
-  ], 
-  "success": true, 
-  "total_questions": 19
+    "actors": [
+        {
+            "age": 25,
+            "gender": "female",
+            "id": 1,
+            "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg",
+            "name": "Actor1"
+        }
+    ],
+    "success": true
 }
 ```
 
-## DELETE /questions/{question_id}
+## POST /actors
 General:
-Deletes the question of the given ID if it exists. Returns the id of the deleted question, success value, total questions, and question list based on current page number to update the frontend.
-curl -X DELETE http://127.0.0.1:5000/questions/26
+Creates a new actor using the name, age , gender and image_url. Returns the id of the created question, success value, total actors, and actor list.
+curl http://127.0.0.1:5000/actors -X POST -H "Content-Type: application/json" -d '{
+    "name":"Actor1",
+    "age": 25,
+    "gender":"female",
+    "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg"
+}'
+
 ```bash
 {
-  "deleted": 26, 
-  "questions": [
-    {
-      "answer": "Apollo 13", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 2, 
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    }, 
-    {
-      "answer": "Tom Cruise", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 4, 
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    }, 
-    {
-      "answer": "Maya Angelou", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 5, 
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    }, 
-    {
-      "answer": "Edward Scissorhands", 
-      "category": 5, 
-      "difficulty": 3, 
-      "id": 6, 
-      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
-    }, 
-    {
-      "answer": "Muhammad Ali", 
-      "category": 4, 
-      "difficulty": 1, 
-      "id": 9, 
-      "question": "What boxer's original name is Cassius Clay?"
-    }, 
-    {
-      "answer": "Brazil", 
-      "category": 6, 
-      "difficulty": 3, 
-      "id": 10, 
-      "question": "Which is the only team to play in every soccer World Cup tournament?"
-    }, 
-    {
-      "answer": "Uruguay", 
-      "category": 6, 
-      "difficulty": 4, 
-      "id": 11, 
-      "question": "Which country won the first ever soccer World Cup in 1930?"
-    }, 
-    {
-      "answer": "George Washington Carver", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 12, 
-      "question": "Who invented Peanut Butter?"
-    }, 
-    {
-      "answer": "Lake Victoria", 
-      "category": 3, 
-      "difficulty": 2, 
-      "id": 13, 
-      "question": "What is the largest lake in Africa?"
-    }, 
-    {
-      "answer": "The Palace of Versailles", 
-      "category": 3, 
-      "difficulty": 3, 
-      "id": 14, 
-      "question": "In which royal palace would you find the Hall of Mirrors?"
-    }
-  ], 
-  "success": true, 
-  "total_questions": 19
+    "actors": [
+        {
+            "age": 25,
+            "gender": "female",
+            "id": 1,
+            "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg",
+            "name": "Actor1"
+        }
+    ],
+    "created": 1,
+    "success": true,
+    "total_actors": 1
 }
 ```
 
-## GET /categories/{category_id}/questions
+## POST /movies
 General:
-Returns a list of question objects, success value, current category object and total number of questions in that category
-Sample: curl http://127.0.0.1:5000/categories/1/questions
+Creates a new movie using the title, release_date, and image_url. Returns the id of the created question, success value, total movies, and movie list.
+curl http://127.0.0.1:5000/actors -X POST -H "Content-Type: application/json" -d '{
+    "title":"The princess and the frog",
+    "release_date":"2021/06/07",
+    "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg"
+}'
 
 ```bash
 {
-  "current_category": {
-    "id": 1, 
-    "type": "Science"
-  }, 
-  "questions": [
-    {
-      "answer": "The Liver", 
-      "category": 1, 
-      "difficulty": 4, 
-      "id": 20, 
-      "question": "What is the heaviest organ in the human body?"
-    }, 
-    {
-      "answer": "Alexander Fleming", 
-      "category": 1, 
-      "difficulty": 3, 
-      "id": 21, 
-      "question": "Who discovered penicillin?"
-    }, 
-    {
-      "answer": "Blood", 
-      "category": 1, 
-      "difficulty": 4, 
-      "id": 22, 
-      "question": "Hematology is a branch of medicine involving the study of what?"
-    }
-  ], 
-  "success": true, 
-  "total_questions": 3
-}
-```
-## POST /questions/search
-General:
-Returns a list of question objects, success value, total questions based on the submitted searchTerm.
-curl http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"searchTerm":"organ"}'
-
-```bash
-{
-  "questions": [
-    {
-      "answer": "The Liver", 
-      "category": 1, 
-      "difficulty": 4, 
-      "id": 20, 
-      "question": "What is the heaviest organ in the human body?"
-    }
-  ], 
-  "success": true, 
-  "total_questions": 1
+    "actors": [
+        {
+            "age": 25,
+            "gender": "female",
+            "id": 1,
+            "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg",
+            "name": "Actor1"
+        }
+    ],
+    "created": 1,
+    "success": true,
+    "total_actors": 1
 }
 ```
 
-## POST /quizzes
+## PATCH /movies/{movie_id}
 General:
-Returns a question object and success value based on the submitted previous_questions and quiz_category.
-curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions":[],"quiz_category":{"type":"Science","id":1}}'
-
+Updates the movie of the given ID if it exists. Returns the movie object of the updated movie and success value.
+curl -X PATCH http://127.0.0.1:5000/movies/1 -X PATCH -H "Content-Type: application/json" -d '{
+    "title": "The princess"
+}'
 ```bash
 {
-  "question": {
-    "answer": "Blood", 
-    "category": 1, 
-    "difficulty": 4, 
-    "id": 22, 
-    "question": "Hematology is a branch of medicine involving the study of what?"
-  }, 
-  "success": true
+    "movie": {
+        "id": 1,
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg",
+        "release_date": "Mon, 07 Jun 2021 00:00:00 GMT",
+        "title": "The princess"
+    },
+    "success": true
+}
+```
+
+## PATCH /actors/{actor_id}
+General:
+Updates the actor of the given ID if it exists. Returns the actor object of the updated actor and success value.
+curl -X PATCH http://127.0.0.1:5000/actors/1 -X PATCH -H "Content-Type: application/json" -d '{
+    "name": "Actor2"
+}'
+```bash
+{
+    "actor": {
+        "age": 25,
+        "gender": "female",
+        "id": 2,
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg",
+        "name": "Actor2"
+    },
+    "success": true
+}
+```
+
+## DELETE /movies/{movie_id}
+General:
+Deletes the movie of the given ID if it exists. Returns the id of the deleted movie, success value, total movies, and movie list.
+curl -X DELETE http://127.0.0.1:5000/movies/1
+```bash
+{
+    "deleted": 1,
+    "movies": [],
+    "success": true,
+    "total_movies": 0
+}
+```
+
+## DELETE /actors/{actor_id}
+General:
+Deletes the actor of the given ID if it exists. Returns the id of the deleted actor, success value, total actors, and actor list.
+curl -X DELETE http://127.0.0.1:5000/actors/1
+```bash
+{
+    "actors": [],
+    "deleted": 1,
+    "success": true,
+    "total_actors": 0
 }
 ```
 
