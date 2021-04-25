@@ -69,7 +69,6 @@ The API will return one of these error types when requests fail:
 403: forbidden
 405: invalid method
 409: duplicate resource
-
 ```
 
 ## GET /movies
