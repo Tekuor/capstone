@@ -48,6 +48,18 @@ The first time you run the tests, omit the dropdb command.
 All tests are kept in that file and should be maintained as updates are made to app functionality.
 
 ### API Reference
+All endpoints require a Bearer token. The role a user has determines what they can access.
+#### Casting Assistant
+Can view actors and movies
+
+#### Casting Director
+All permissions a Casting Assistant has and…
+Add or delete an actor from the database
+Modify actors or movies
+
+#### Executive Producer
+All permissions a Casting Director has and…
+Add or delete a movie from the database
 ## Error Handling
 Errors are returned as JSON objects in the following format:
 
@@ -226,5 +238,7 @@ curl -X DELETE http://127.0.0.1:5000/actors/1
 }
 ```
 
+### Deployment
+The project is deployed on heroku and can be accessed with this link https://casting-agency-pro.herokuapp.com
 ### Authors
 Gifty Mate-Kole
