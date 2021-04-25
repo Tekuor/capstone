@@ -61,9 +61,9 @@ class Actor(db.Model):
   __tablename__ = 'Actor'
 
   id = Column(Integer, primary_key=True)
-  name = Column(String)
-  age = db.Column(db.Integer)
-  gender = Column(String)
+  name = Column(String, nullable=False)
+  age = db.Column(db.Integer, nullable=False)
+  gender = Column(String, nullable=False)
   image_url = Column(String)
 
   def __init__(self, name, age, gender, image_url):

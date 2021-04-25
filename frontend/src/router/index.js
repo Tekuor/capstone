@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import LandingPage from '../views/LandingPage.vue'
 import Movie from "../views/Movie.vue";
 import AddMovie from "../views/AddMovie.vue";
+import Dashboard from "../views/Dashboard.vue"
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'LandingPage',
+    component: LandingPage
   },
   {
     path: '/movies',
@@ -21,6 +22,11 @@ const routes = [
     path: '/add-movie',
     name: 'AddMovie',
     component: AddMovie
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard
   },
   {
     path: '/about',

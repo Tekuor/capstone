@@ -7,7 +7,7 @@ from app import create_app
 from models import setup_db, Movie, Actor
 
 DIRECTOR_TOKEN = os.environ['DIRECTOR']
-# ASSISTANT_TOKEN = os.environ['ASSISTANT']
+ASSISTANT_TOKEN = os.environ['ASSISTANT']
 PRODUCER_TOKEN = os.environ['PRODUCER']
 
 class CastingAgencyTestCase(unittest.TestCase):
@@ -44,24 +44,15 @@ class CastingAgencyTestCase(unittest.TestCase):
         }
 
         self.wrong_movie = {
-            'title':'First Movie',
-            'release_date': [],
-            "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg"
+            'title': 5,
+            'release_date': 8,
+            "image_url": 2
         }
 
-        # self.wrong_search = {
-        #     'searchTerm':[]
-        # }
-
-        # self.quiz_data = {
-        #     'previous_questions': [],
-        #     'quiz_category': {'type': "Entertainment", 'id': '5'}
-        # }
-
-        # self.wrong_quiz_data = {
-        #     'previous_questions': [],
-        #     'quiz_category': '5'
-        # }
+        self.wrong_actor = {
+            'age':'30',
+            'gender':90
+        }
     
     def tearDown(self):
         """Executed after reach test"""
@@ -133,6 +124,18 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['movie'])
 
+    def test_422_if_update_movie_unprocessible_entity(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
+
+        res = self.client().patch('/movies/109', headers=headers, json=self.wrong_movie)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessible entity')
+
     def test_delete_movie(self):
         headers = {
         'Content-Type': 'application/json',
@@ -146,6 +149,18 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['deleted'])
         self.assertTrue(len(data['movies']))
         self.assertTrue(data['total_movies'])
+
+    def test_422_if_movie_does_not_exist(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
+
+        res = self.client().delete('/movies/200', headers=headers)
+        data = json.loads(res.data)
+        
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessible entity')
     
     def test_get_all_actors(self):
         headers = {
@@ -158,6 +173,18 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['actors']))
+    
+    def test_404_sent_requesting_actors_beyond_valid_page(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
+        
+        res = self.client().get('/actors?page=300', headers=headers)
+        data = json.loads(res.data)
+        
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
 
     def test_create_new_actor(self):
         headers = {
@@ -173,17 +200,41 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(len(data['actors']))
         self.assertTrue(data['total_actors'])
 
+    def test_422_if_create_actor_unprocessible_entity(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
+
+        res = self.client().post('/actors', headers=headers, json=self.wrong_actor)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessible entity')
+
     def test_update_actor(self):
         headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + PRODUCER_TOKEN}
 
         self.new_actor['name'] = 'Second Actor'
-        res = self.client().patch('/actors/1', headers=headers, json=self.new_actor)
+        res = self.client().patch('/actors/3', headers=headers, json=self.new_actor)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['actor'])
+
+    def test_422_if_update_actor_unprocessible_entity(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
+
+        res = self.client().patch('/actors/109', headers=headers, json=self.wrong_actor)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessible entity')
 
     def test_delete_actor(self):
         headers = {
@@ -199,85 +250,96 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(len(data['actors']))
         self.assertTrue(data['total_actors'])
 
-    # def test_422_if_create_question_unprocessible_entity(self):
-    #     res = self.client().post('/questions', json=self.wrong_question)
-    #     data = json.loads(res.data)
+    def test_422_if_actor_does_not_exist(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
 
-    #     self.assertEqual(res.status_code, 422)
-    #     self.assertEqual(data['success'], False)
-    #     self.assertEqual(data['message'], 'unprocessible entity')
-
-    # def test_search_questions(self):
-    #     res = self.client().post('/questions/search', json=self.search)
-    #     data = json.loads(res.data)
-
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(len(data['questions']))
-    #     self.assertTrue(data['total_questions'])
-
-    # def test_422_if_search_questions_unprocessible_entity(self):
-    #     res = self.client().post('/questions/search', json=self.wrong_search)
-    #     data = json.loads(res.data)
-
-    #     self.assertEqual(res.status_code, 422)
-    #     self.assertEqual(data['success'], False)
-    #     self.assertEqual(data['message'], 'unprocessible entity')
-
-    # def test_get_category_questions(self):
-    #     res = self.client().get('/categories/3/questions')
-    #     data = json.loads(res.data)
+        res = self.client().delete('/actors/200', headers=headers)
+        data = json.loads(res.data)
         
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(len(data['questions']))
-    #     self.assertTrue(data['total_questions'])
-    #     self.assertTrue(data['current_category'])
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessible entity')
 
-    # def test_404_if_category_cannot_be_found(self):
-    #     res = self.client().get('/categories/500/questions')
-    #     data = json.loads(res.data)
+    def test_director_add_actor(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + DIRECTOR_TOKEN}
+
+        res = self.client().post('/actors', headers=headers, json=self.new_actor)
+        data = json.loads(res.data)
         
-    #     self.assertEqual(res.status_code, 404)
-    #     self.assertEqual(data['success'], False)
-    #     self.assertEqual(data['message'], 'resource not found')
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['created'])
+        self.assertTrue(len(data['actors']))
+        self.assertTrue(data['total_actors'])
 
-    # def test_get_quiz(self):
-    #     res = self.client().post('/quizzes', json=self.quiz_data)
-    #     data = json.loads(res.data)
+    def test_403_director_add_movie(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + DIRECTOR_TOKEN}
 
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(data['question'])
+        res = self.client().post('/movies', headers=headers, json=self.new_movie)
+        data = json.loads(res.data)
 
-    # def test_422_if_unprocessible_entity_quiz(self):
-    #     res = self.client().post('/quizzes', json=self.wrong_quiz_data)
-    #     data = json.loads(res.data)
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message']['description'], 'Permission not found.')
 
-    #     self.assertEqual(res.status_code, 422)
-    #     self.assertEqual(data['success'], False)
-    #     self.assertEqual(data['message'], 'unprocessible entity')
+    def test_assistant_view_movies(self):
+        producerHeaders = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
 
-    # def test_delete_question(self):
-    #     res = self.client().delete('/questions/42')
-    #     data = json.loads(res.data)
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + ASSISTANT_TOKEN}
 
-    #     question = Question.query.filter(Question.id == 42).one_or_none()
+        self.client().post('/movies', headers=producerHeaders, json=self.new_movie)
+        res = self.client().get('/movies', headers=headers)
+        data = json.loads(res.data)
+    
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['movies']))
+
+    def test_403_assistant_add_movie(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + ASSISTANT_TOKEN}
+
+        res = self.client().post('/movies', headers=headers, json=self.new_movie)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message']['description'], 'Permission not found.')
+
+    def test_producer_get_all_movies(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
+
+        res = self.client().get('/movies', headers=headers)
+        data = json.loads(res.data)
         
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(data['total_questions'])
-    #     self.assertTrue(len(data['questions']))
-    #     self.assertEqual(data['deleted'], 42)
-    #     self.assertEqual(question, None)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['movies']))
 
-    # def test_422_if_question_does_not_exist(self):
-    #     res = self.client().delete('/questions/200')
-    #     data = json.loads(res.data)
+    def test_producer_get_all_actors(self):
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PRODUCER_TOKEN}
+
+        res = self.client().get('/actors', headers=headers)
+        data = json.loads(res.data)
         
-    #     self.assertEqual(res.status_code, 422)
-    #     self.assertEqual(data['success'], False)
-    #     self.assertEqual(data['message'], 'unprocessible entity')
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['actors']))
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

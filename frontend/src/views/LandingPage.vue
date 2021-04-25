@@ -1,9 +1,11 @@
 <template>
   <div class="home">
-    <div id="main">
+    <NavBar/>
+    <FirstSection />
+    <!-- <div id="main">
       <div class="is-size-1 has-text-weight-bold is-capitalized" style="color:#990033">Casting actors just got simpler!</div>
       <div class="pt-4"><b-button type="is-primary" @click="login" style="background-color:#990033" size="is-medium">Get Started</b-button></div>
-    </div>
+    </div> -->
     <!-- <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" /> -->
 
@@ -18,11 +20,14 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import NavBar from "../components/NavBar";
+import FirstSection from "../components/FirstSection";
 
 export default {
   name: 'Home',
   components: {
+    NavBar,
+    FirstSection
   },
   methods: {
     // Log the user in
@@ -34,16 +39,5 @@ export default {
 </script>
 
 <style scoped>
-  .home {
-    height:100%;
-    background: 
-    linear-gradient(
-      rgba(232, 232, 232, 0.45), 
-      rgba(232, 232, 232, 0.45)
-    ),
-    url("../assets/background.jpg");
-  }
-  #main{
-    padding-top:18%
-  }
+
 </style>

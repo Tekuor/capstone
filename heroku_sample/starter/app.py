@@ -99,7 +99,7 @@ def create_app(test_config=None):
 
             if movie is None:
                 abort(404)
-
+           
             if 'title' in body:
                 movie.title = body.get('title', None)
             if 'release_date' in body:
@@ -122,6 +122,9 @@ def create_app(test_config=None):
     def retrieve_actors(payload):
         selection = Actor.query.order_by(Actor.id).all()
         current_actors = paginate_items(request, selection)
+
+        if len(current_actors) == 0:
+            abort(404)
 
         return jsonify({
         'success': True,
@@ -167,7 +170,7 @@ def create_app(test_config=None):
 
             selection = Actor.query.order_by(Actor.id).all()
             current_actors = paginate_items(request, selection)
-
+            
             return jsonify({
                 'success': True,
                 'created': actor.id,

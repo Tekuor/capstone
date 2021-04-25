@@ -8,21 +8,18 @@
 
         <template #end>
             <b-navbar-item tag="router-link" :to="{ path: '/movies' }" class="nav-items">
-                Home
+                Dashboard
             </b-navbar-item>
             <b-navbar-item href="#" class="nav-items">
-                About
+                Movies
             </b-navbar-item>
             <b-navbar-item tag="router-link" :to="{ path: '/movies' }" class="nav-items">
-                Features
-            </b-navbar-item>
-            <b-navbar-item href="#" class="nav-items">
-                Contact
+                Actors
             </b-navbar-item>
             <b-navbar-item tag="div">
                 <div class="buttons">
                     <a class="button is-primary" @click="login">
-                        Sign Up
+                        User Name
                     </a>
                 </div>
             </b-navbar-item>
@@ -32,7 +29,7 @@
 
 <script>
     export default {
-        name: 'Movie',
+        name: 'LoggedInNavBar',
         components: {
         },
         methods: {

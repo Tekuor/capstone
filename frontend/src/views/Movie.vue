@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="center" v-else>
-                <img alt="Vue logo" src="../assets/movies.png" style="height:120px"/>
+                <!-- <img alt="Vue logo" src="../assets/movies.png" style="height:120px"/> -->
                 <p style="color:#990033" class="has-text-weight-bold is-capitalized is-size-4">No Movies Available</p>
                 <b-button @click="goToAddMovie()" type="is-primary" style="background-color:#990033">Add Movie</b-button>
             </div>
