@@ -91,23 +91,19 @@ class Actor(db.Model):
       'gender': self.gender,
       'image_url': self.image_url}
 
-# '''
-# Person
-# Have title and release year
-# '''
-# class Person(db.Model):  
-#   __tablename__ = 'People'
+class MovieRoles(db.Model):
+    __tablename__ = 'MovieRoles'
 
-#   id = Column(Integer, primary_key=True)
-#   name = Column(String)
-#   catchphrase = Column(String)
+    id = Column(Integer, primary_key=True)
+    actor_id = Column(db.Integer, db.ForeignKey('Actor.id'), nullable=False)
+    movie_id = Column(db.Integer, db.ForeignKey('Movie.id'), nullable=False)
+    role = Column(String)
 
-#   def __init__(self, name, catchphrase=""):
-#     self.name = name
-#     self.catchphrase = catchphrase
+    def __init__(self, actor_id, movie_id, role):
+      self.actor_id = actor_id
+      self.role = role
+      self.movie_id = movie_id
 
-#   def format(self):
-#     return {
-#       'id': self.id,
-#       'name': self.name,
-#       'catchphrase': self.catchphrase}
+    def insert(self):
+      db.session.add(self)
+      db.session.commit()

@@ -1,9 +1,10 @@
 import os
 from flask import Flask, request, jsonify, abort
-from models import setup_db, Movie, Actor
+from models import setup_db, Movie, Actor, MovieRoles
 from flask_cors import CORS
 from auth.auth import AuthError, requires_auth
 import sys
+import json
 
 ITEMS_PER_PAGE = 10
 
@@ -72,10 +73,16 @@ def create_app(test_config=None):
         new_title = body.get('title', None)
         new_release_date = body.get('release_date', None)
         new_image_url = body.get('image_url', None)
+        new_roles = body.get('roles', None)
 
         try:
             movie = Movie(title=new_title, release_date=new_release_date, image_url=new_image_url)
             movie.insert()
+
+            if(len(new_roles)):
+                for role in new_roles:
+                    new_role = MovieRoles(actor_id=role['actor_id'], movie_id=movie.id, role=role['role'])
+                    new_role.insert()
 
             selection = Movie.query.order_by(Movie.id).all()
             current_movies = paginate_items(request, selection)
