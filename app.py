@@ -74,9 +74,10 @@ def create_app(test_config=None):
         new_release_date = body.get('release_date', None)
         new_image_url = body.get('image_url', None)
         new_roles = body.get('roles', None)
+        new_description = body.get('description', None)
 
         try:
-            movie = Movie(title=new_title, release_date=new_release_date, image_url=new_image_url)
+            movie = Movie(title=new_title, release_date=new_release_date, image_url=new_image_url, description=new_description)
             movie.insert()
 
             if(len(new_roles)):
@@ -113,6 +114,8 @@ def create_app(test_config=None):
                 movie.recipe = body.get('release_date', None)
             if 'image_url' in body:
                 movie.image_url = body.get('image_url', None)
+            if 'description' in body:
+                movie.description = body.get('description', None)
 
             movie.update()
 
