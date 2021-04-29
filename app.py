@@ -42,6 +42,24 @@ def create_app(test_config=None):
             sys.exc_info()
             abort(404)
 
+    @app.route('/movies/<int:id>', methods=['GET'])
+    @requires_auth('patch:movies')
+    def get_movie(payload, id):
+        try:
+            movie = Movie.query.filter(Movie.id == id).one_or_none()
+
+            if movie is None:
+                abort(404)
+
+            return jsonify({
+                'success': True,
+                'movie': movie.format(),
+                'roles': roles
+            })
+
+        except:
+            abort(422)
+
     @app.route('/movies/<int:id>', methods=['DELETE'])
     @requires_auth('delete:movies')
     def delete_movie(payload, id):
@@ -140,6 +158,23 @@ def create_app(test_config=None):
         'success': True,
         'actors': current_actors
         })
+
+    @app.route('/actors/<int:id>', methods=['GET'])
+    @requires_auth('patch:actors')
+    def get_actor(payload, id):
+        try:
+            actor = Actor.query.filter(Actor.id == id).one_or_none()
+
+            if actor is None:
+                abort(404)
+
+            return jsonify({
+                'success': True,
+                'actor': actor.format()
+            })
+
+        except:
+            abort(422)
 
     @app.route('/actors/<int:id>', methods=['DELETE'])
     @requires_auth('delete:actors')
