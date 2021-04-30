@@ -64,13 +64,11 @@ def create_app(test_config=None):
     def delete_movie(payload, id):
         try:
             movie = Movie.query.filter(Movie.id == id).one_or_none()
-            print("movie", movie)
 
             if movie is None:
                 abort(404)
 
             roles = MovieRoles.query.filter(MovieRoles.movie_id == id).all()
-            print("roles", roles)
             for role in roles:
                 role.delete()
 
@@ -105,8 +103,9 @@ def create_app(test_config=None):
 
             if(len(new_roles)):
                 for role in new_roles:
-                    new_role = MovieRoles(actor_id=role['actor_id'], movie_id=movie.id, role=role['role'])
-                    new_role.insert()
+                    if role.actor_id and role.role:
+                        new_role = MovieRoles(actor_id=role['actor_id'], movie_id=movie.id, role=role['role'])
+                        new_role.insert()
 
             selection = Movie.query.order_by(Movie.id).all()
             current_movies = paginate_items(request, selection)
@@ -191,7 +190,6 @@ def create_app(test_config=None):
                 abort(404)
 
             roles = MovieRoles.query.filter(MovieRoles.actor_id == id).all()
-            print("roles", roles)
             for role in roles:
                 role.delete()
 
