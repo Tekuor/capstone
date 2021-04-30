@@ -9,6 +9,8 @@ All backend code follows [PEP8 style guidelines](https://www.python.org/dev/peps
 ### Pre-requisites and Local Development 
 Developers using this project should already have Python3, pip and node installed on their local machines.
 
+#### Frontend
+The frontend for this project can be found in this repository https://github.com/Tekuor/capstone_frontend#capstone-frontend
 #### Backend
 
 From the root folder run `pip install requirements.txt`. All required packages are included in the requirements file with environment variables in the setup.sh file. 
