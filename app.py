@@ -53,8 +53,7 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'movie': movie.format(),
-                'roles': roles
+                'movie': movie.format()
             })
 
         except:
@@ -65,9 +64,15 @@ def create_app(test_config=None):
     def delete_movie(payload, id):
         try:
             movie = Movie.query.filter(Movie.id == id).one_or_none()
+            print("movie", movie)
 
             if movie is None:
                 abort(404)
+
+            roles = MovieRoles.query.filter(MovieRoles.movie_id == id).all()
+            print("roles", roles)
+            for role in roles:
+                role.delete()
 
             movie.delete()
             selection = Movie.query.order_by(Movie.id).all()
@@ -129,7 +134,7 @@ def create_app(test_config=None):
             if 'title' in body:
                 movie.title = body.get('title', None)
             if 'release_date' in body:
-                movie.recipe = body.get('release_date', None)
+                movie.release_date = body.get('release_date', None)
             if 'image_url' in body:
                 movie.image_url = body.get('image_url', None)
             if 'description' in body:
@@ -184,6 +189,11 @@ def create_app(test_config=None):
 
             if actor is None:
                 abort(404)
+
+            roles = MovieRoles.query.filter(MovieRoles.actor_id == id).all()
+            print("roles", roles)
+            for role in roles:
+                role.delete()
 
             actor.delete()
             selection = Actor.query.order_by(Actor.id).all()
