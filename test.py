@@ -34,7 +34,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.new_movie = {
             'title':'First Movie',
             'release_date':'2021/06/07',
-            "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg"
+            "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/The_Princess_and_the_Frog_poster.jpg/220px-The_Princess_and_the_Frog_poster.jpg",
+            "roles": []
         }
 
         self.new_actor = {
@@ -56,7 +57,10 @@ class CastingAgencyTestCase(unittest.TestCase):
     
     def tearDown(self):
         """Executed after reach test"""
-        pass
+        self.app = create_app()
+        self.db.init_app(self.app)
+        with self.app.app_context():
+            self.db.drop_all()
 
     """
     TODO
