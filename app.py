@@ -106,7 +106,7 @@ def create_app(test_config=None):
                     print()
                     if role.actor_id and role.role:
                         print()
-                        new_role = MovieRoles(actor_id=1, movie_id=14, role=r'ygyg')
+                        new_role = MovieRoles(actor_id=1, movie_id=14, role='ygyg')
                         new_role.insert()
 
             selection = Movie.query.order_by(Movie.id).all()
