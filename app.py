@@ -101,11 +101,12 @@ def create_app(test_config=None):
             movie = Movie(title=new_title, release_date=new_release_date, image_url=new_image_url, description=new_description)
             movie.insert()
 
-            # if(len(new_roles)):
-            #     for role in new_roles:
-            #         if role.actor_id and role.role:
-            #             new_role = MovieRoles(actor_id=role['actor_id'], movie_id=1, role=role['role'])
-            #             new_role.insert()
+            if(len(new_roles)):
+                for role in new_roles:
+                    if role.actor_id and role.role:
+                        print()
+                        # new_role = MovieRoles(actor_id=role['actor_id'], movie_id=1, role=role['role'])
+                        # new_role.insert()
 
             selection = Movie.query.order_by(Movie.id).all()
             current_movies = paginate_items(request, selection)
