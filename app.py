@@ -106,8 +106,8 @@ def create_app(test_config=None):
                     print()
                     # if role.actor_id and role.role:
                     #     print()
-                        # new_role = MovieRoles(actor_id=role['actor_id'], movie_id=1, role=role['role'])
-                        # new_role.insert()
+                    new_role = MovieRoles(actor_id=role['actor_id'], movie_id=1, role=role['role'])
+                    new_role.insert()
 
             selection = Movie.query.order_by(Movie.id).all()
             current_movies = paginate_items(request, selection)
