@@ -48,8 +48,8 @@ def create_app(test_config=None):
         try:
             movie = Movie.query.filter(Movie.id == id).one_or_none()
             roles = MovieRoles.query.filter(MovieRoles.movie_id == id).all()
-            for role in roles:
-                role.format()
+            # for role in roles:
+            #     role.format()
 
             if movie is None:
                 abort(404)
