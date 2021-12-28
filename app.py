@@ -329,7 +329,8 @@ def create_app(test_config=None):
         return jsonify({
         'success': False,
         'error': 422,
-        'message': "unprocessible entity"
+        'message': "unprocessible entity",
+        'error': error
         }), 422
 
     @app.errorhandler(AuthError)
