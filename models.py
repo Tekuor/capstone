@@ -103,9 +103,9 @@ class MovieRoles(db.Model):
     role = Column(String)
 
     def __init__(self, actor_id, movie_id, role):
-      self.actor_id = actor_id
+      # self.actor_id = actor_id
       self.role = role
-      self.movie_id = movie_id
+      # self.movie_id = movie_id
 
     def insert(self):
       db.session.add(self)
