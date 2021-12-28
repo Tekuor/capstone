@@ -47,13 +47,15 @@ def create_app(test_config=None):
     def get_movie(payload, id):
         try:
             movie = Movie.query.filter(Movie.id == id).one_or_none()
+            roles = MovieRoles.query.filter(MovieRoles.movie_id == id).one_or_none()
 
             if movie is None:
                 abort(404)
 
             return jsonify({
                 'success': True,
-                'movie': movie.format()
+                'movie': movie.format(),
+                'roles': roles
             })
 
         except:
@@ -112,8 +114,8 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True,
                 'created': new_role.id,
-                # 'movies': current_movies,
-                # 'total_movies': len(Movie.query.all())
+                'movies': current_movies,
+                'total_movies': len(Movie.query.all())
             })
 
         except:
