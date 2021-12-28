@@ -57,7 +57,7 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True,
                 'movie': movie.format(),
-                'roles': roles
+                # 'roles': roles
             })
 
         except:
