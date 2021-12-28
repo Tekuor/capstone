@@ -105,9 +105,6 @@ def create_app(test_config=None):
                 for role in new_roles:
                     new_role = MovieRoles(actor_id=role['actor_id'], movie_id=movie.id, role=role['role'])
                     new_role.insert()
-                    # if role.actor_id and role.role:
-                    #     new_role = MovieRoles(actor_id=1, role='ygyg')
-                    #     new_role.insert()
 
             selection = Movie.query.order_by(Movie.id).all()
             current_movies = paginate_items(request, selection)
@@ -278,7 +275,7 @@ def create_app(test_config=None):
         return jsonify({
         'success': False,
         'error': 500,
-        'message': error.error
+        'message': error['error']
         }), 500
 
     @app.errorhandler(400)
@@ -326,7 +323,7 @@ def create_app(test_config=None):
         return jsonify({
         'success': False,
         'error': 422,
-        'message': error.error
+        'message': error['error']
         }), 422
 
     @app.errorhandler(AuthError)
@@ -334,7 +331,7 @@ def create_app(test_config=None):
         return jsonify({
         "success": False, 
         "error": error.status_code,
-        "message": error.error
+        "message": error['error']
         }), error.status_code
 
     return app
