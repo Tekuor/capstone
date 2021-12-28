@@ -114,3 +114,10 @@ class MovieRoles(db.Model):
     def delete(self):
       db.session.delete(self)
       db.session.commit()
+
+    def format(self):
+      return {
+        'id': self.id,
+        'actor_id': self.actor_id,
+        'movie_id': self.movie_id,
+        'role': self.role}
