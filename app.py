@@ -48,8 +48,7 @@ def create_app(test_config=None):
         try:
             movie = Movie.query.filter(Movie.id == id).one_or_none()
             roles = MovieRoles.query.filter(MovieRoles.movie_id == id).all()
-            # for role in roles:
-            #     role.format()
+            roles = [role.format() for role in roles]
 
             if movie is None:
                 abort(404)
@@ -57,7 +56,7 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True,
                 'movie': movie.format(),
-                # 'roles': roles
+                'roles': roles
             })
 
         except:
