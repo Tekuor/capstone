@@ -47,7 +47,7 @@ def create_app(test_config=None):
     def get_movie(payload, id):
         try:
             movie = Movie.query.filter(Movie.id == id).one_or_none()
-            roles = MovieRoles.query.filter(MovieRoles.movie_id == id).one_or_none()
+            roles = MovieRoles.query.filter(MovieRoles.movie_id == id).all()
 
             if movie is None:
                 abort(404)
