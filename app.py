@@ -98,7 +98,7 @@ def create_app(test_config=None):
         new_description = body.get('description', None)
 
         try:
-            new_role = MovieRoles(actor_id=1, movie_id=14, role='ygyg')
+            new_role = MovieRoles(role='ygyg')
             new_role.insert()
 
             # movie = Movie(title=new_title, release_date=new_release_date, image_url=new_image_url, description=new_description)
@@ -119,7 +119,7 @@ def create_app(test_config=None):
                 'success': True,
                 'created': new_role.id,
                 # 'movies': current_movies,
-                'total_movies': len(Movie.query.all())
+                # 'total_movies': len(Movie.query.all())
             })
 
         except:

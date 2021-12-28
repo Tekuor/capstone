@@ -98,8 +98,8 @@ class MovieRoles(db.Model):
     __tablename__ = 'MovieRoles'
 
     id = Column(Integer, primary_key=True)
-    actor_id = Column(db.Integer, db.ForeignKey('Actor.id'), nullable=False)
-    movie_id = Column(db.Integer, db.ForeignKey('Movie.id'), nullable=False)
+    # actor_id = Column(db.Integer, db.ForeignKey('Actor.id'), nullable=False)
+    # movie_id = Column(db.Integer, db.ForeignKey('Movie.id'), nullable=False)
     role = Column(String)
 
     def __init__(self, actor_id, movie_id, role):
