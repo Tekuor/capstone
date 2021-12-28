@@ -281,7 +281,7 @@ def create_app(test_config=None):
         return jsonify({
         'success': False,
         'error': 500,
-        'message': "server error"
+        'message': error.error
         }), 500
 
     @app.errorhandler(400)
