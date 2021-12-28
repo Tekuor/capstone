@@ -329,7 +329,7 @@ def create_app(test_config=None):
         return jsonify({
         'success': False,
         'error': 422,
-        'message': error
+        'message': error.error
         }), 422
 
     @app.errorhandler(AuthError)
