@@ -106,7 +106,7 @@ def create_app(test_config=None):
 
             if(len(new_roles)):
                 for role in new_roles:
-                    new_role = MovieRoles(actor_id=1, role='ygyg')
+                    new_role = MovieRoles(actor_id=1, movie_id=14, role='ygyg')
                     new_role.insert()
                     # if role.actor_id and role.role:
                     #     new_role = MovieRoles(actor_id=1, role='ygyg')
