@@ -141,6 +141,17 @@ def create_app(test_config=None):
             if 'description' in body:
                 movie.description = body.get('description', None)
 
+            if 'roles' in body:
+                editedRoles = body.get('roles', None)
+                roles = MovieRoles.query.filter(MovieRoles.movie_id == id).all()
+                for role in roles:
+                    role.delete()
+
+                for role in editedRoles:
+                    new_role = MovieRoles(actor_id=role['actor_id'], movie_id=id, role=role['role'])
+                    new_role.insert()
+
+
             movie.update()
 
             return jsonify({
