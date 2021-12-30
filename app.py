@@ -170,7 +170,7 @@ def create_app(test_config=None):
         search = "%{}%".format(searchTerm)
 
         try:
-            selection = Movie.query.filter(Movie.title.like(search)).all()
+            selection = Movie.query.filter(Movie.title.ilike(search)).all()
             current_movies = paginate_items(request, selection)
 
             return jsonify({
@@ -294,6 +294,26 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True,
                 'actor': actor.format()
+            })
+
+        except:
+            abort(422)
+
+    @app.route('/actors/search', methods=['POST'])
+    def search_actor():
+        body = request.get_json()
+
+        searchTerm = body.get('searchTerm', None)
+        search = "%{}%".format(searchTerm)
+
+        try:
+            selection = Actor.query.filter(Actor.name.ilike(search)).all()
+            current_actors = paginate_items(request, selection)
+
+            return jsonify({
+                'success': True,
+                'actors': current_actors,
+                'total_actors': len(current_actors)
             })
 
         except:
