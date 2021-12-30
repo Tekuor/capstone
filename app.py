@@ -170,7 +170,7 @@ def create_app(test_config=None):
         search = "%{}%".format(searchTerm)
 
         try:
-            selection = Movie.query.filter(Movie.question.like(search)).all()
+            selection = Movie.query.filter(Movie.title.like(search)).all()
             current_movies = paginate_items(request, selection)
 
             return jsonify({
