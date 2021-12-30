@@ -175,8 +175,8 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'questions': current_movies,
-                'total_questions': len(current_movies)
+                'movies': current_movies,
+                'total_movies': len(current_movies)
             })
 
         except:
