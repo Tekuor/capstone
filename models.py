@@ -68,12 +68,14 @@ class Actor(db.Model):
   age = db.Column(db.Integer, nullable=False)
   gender = Column(String, nullable=False)
   image_url = Column(String)
+  about = Column(String)
 
-  def __init__(self, name, age, gender, image_url):
+  def __init__(self, name, age, gender, image_url, about):
     self.name = name
     self.age = age
     self.gender = gender
     self.image_url = image_url
+    self.about = about
 
   def insert(self):
     db.session.add(self)
@@ -92,7 +94,8 @@ class Actor(db.Model):
       'name': self.name,
       'age': self.age,
       'gender': self.gender,
-      'image_url': self.image_url}
+      'image_url': self.image_url,
+      'about': self.about}
 
 class MovieRoles(db.Model):
     __tablename__ = 'MovieRoles'

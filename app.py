@@ -229,9 +229,10 @@ def create_app(test_config=None):
         new_age = body.get('age', None)
         new_gender = body.get('gender', None)
         new_image_url = body.get('image_url', None)
+        new_about = body.get('about', None)
 
         try:
-            actor = Actor(name=new_name, age=new_age, gender=new_gender, image_url=new_image_url)
+            actor = Actor(name=new_name, age=new_age, gender=new_gender, image_url=new_image_url, about=new_about)
             actor.insert()
 
             selection = Actor.query.order_by(Actor.id).all()
@@ -265,6 +266,8 @@ def create_app(test_config=None):
                 actor.gender = body.get('gender', None)
             if 'gender' in body:
                 actor.image_url = body.get('image_url', None)
+            if 'about' in body:
+                actor.about = body.get('about', None)
 
             actor.update()
 
