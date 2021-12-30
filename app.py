@@ -162,6 +162,26 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    @app.route('/movies/search', methods=['POST'])
+    def search_movie():
+        body = request.get_json()
+
+        searchTerm = body.get('searchTerm', None)
+        search = "%{}%".format(searchTerm)
+
+        try:
+            selection = Movie.query.filter(Movie.question.like(search)).all()
+            current_movies = paginate_items(request, selection)
+
+            return jsonify({
+                'success': True,
+                'questions': current_movies,
+                'total_questions': len(current_movies)
+            })
+
+        except:
+            abort(422)
+
     @app.route('/actors')
     @requires_auth('get:actors')
     def retrieve_actors(payload):
